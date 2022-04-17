@@ -1,5 +1,5 @@
 # array
-<h2>Go package contains usefull slice functions.</h2>
+<h2>Go package contains usefull functions to work with slices.</h2>
 
 Instalation:
 <code>go get githab.com/jmmpc/array</code>
