@@ -1,10 +1,10 @@
 # array
 <h2>Go package contains usefull functions to work with slices.</h2>
 
-Instalation:
+<h3>Instalation:</h3>
 <code>go get githab.com/jmmpc/array</code>
 
-Current function list:
+<h3>Current function list:</h3>
 <ul>
 <li>Map</li>
 <li>Filter</li>
@@ -20,6 +20,6 @@ Current function list:
 <li>Reverse</li>
 <li>MapKeys</li>
 <li>MapValues</li>
-<ul>
+</ul>
 
-All functions are generic so minimum requared version of Go is 1.18
+<p>All functions are generic so minimum requared version of Go is 1.18</p>
