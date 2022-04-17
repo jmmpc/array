@@ -22,4 +22,4 @@
 <li>MapValues</li>
 </ul>
 
-<p>All functions are generic so minimum requared version of Go is 1.18</p>
+<p>All functions are generic so minimum requared version of Go is 1.18.</p>
