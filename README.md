@@ -21,3 +21,5 @@ Current function list:
 <li>MapKeys</li>
 <li>MapValues</li>
 <ul>
+
+All functions are generic so minimum requared version of Go is 1.18
