@@ -2,7 +2,7 @@
 <h2>Go package contains usefull functions to work with slices.</h2>
 
 <h3>Instalation:</h3>
-<code>go get githab.com/jmmpc/array</code>
+<code>go get github.com/jmmpc/array</code>
 
 <h3>Current function list:</h3>
 <ul>
