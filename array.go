@@ -131,7 +131,7 @@ func Reverse[T any](slice []T) []T {
 
 // MapKeys returns slice of keys of given map.
 func MapKeys[Key comparable, Val any](m map[Key]Val) []Key {
-	newSlice := []Key{}
+	newSlice := make([]Key, 0, len(m))
 	for key := range m {
 		newSlice = append(newSlice, key)
 	}
@@ -140,7 +140,7 @@ func MapKeys[Key comparable, Val any](m map[Key]Val) []Key {
 
 // MapKeys returns slice of values of given map.
 func MapValues[Key comparable, Val any](m map[Key]Val) []Val {
-	newSlice := []Val{}
+	newSlice := make([]Val, 0, len(m))
 	for _, val := range m {
 		newSlice = append(newSlice, val)
 	}
