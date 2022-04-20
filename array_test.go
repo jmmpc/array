@@ -135,22 +135,22 @@ func TestSome(t *testing.T) {
 }
 
 func TestIndex(t *testing.T) {
-	tt := []struct {
+	tt := map[int]struct {
 		input []string
 		key   string
 		want  int
 	}{
-		{
+		1: {
 			input: []string{"hello", "my", "dear", "friend"},
 			key:   "",
 			want:  -1,
 		},
-		{
+		2: {
 			input: []string{"hello", "my", "dear", "friend"},
 			key:   "my",
 			want:  1,
 		},
-		{
+		3: {
 			input: nil,
 			key:   "my",
 			want:  -1,
@@ -398,23 +398,23 @@ func TestMapKeys(t *testing.T) {
 }
 
 func TestMapValues(t *testing.T) {
-	tt := []struct {
+	tt := map[int]struct {
 		input map[string]int
 		want  []int
 	}{
-		{
+		1: {
 			input: map[string]int{"hello": 1, "my": 2, "dear": 3, "friend": 4},
 			want:  []int{1, 2, 3, 4},
 		},
-		{
+		2: {
 			input: map[string]int{"hello": 1},
 			want:  []int{1},
 		},
-		{
+		3: {
 			input: map[string]int{},
 			want:  []int{},
 		},
-		{
+		4: {
 			input: nil,
 			want:  []int{},
 		},
