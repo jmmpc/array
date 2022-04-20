@@ -1,461 +1,460 @@
 package array
 
 import (
+	"reflect"
 	"testing"
 )
 
-var tt1 = []struct {
-	input    []string
-	callback func(string) int
-	output   []int
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) int { return len(s) },
-		output:   []int{5, 2, 4, 6},
-	},
-	{
-		input:    []string{"", "m", "de", "end"},
-		callback: func(s string) int { return len(s) },
-		output:   []int{0, 1, 2, 3},
-	},
-	{
-		input:    []string{},
-		callback: func(s string) int { return len(s) },
-		output:   []int{},
-	},
-	{
-		input:    nil,
-		callback: func(s string) int { return len(s) },
-		output:   []int{},
-	},
-}
-
 func TestMap(t *testing.T) {
-	for _, tc := range tt1 {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) int
+		want     []int
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) int { return len(s) },
+			want:     []int{5, 2, 4, 6},
+		},
+		2: {
+			input:    []string{"", "m", "de", "end"},
+			callback: func(s string) int { return len(s) },
+			want:     []int{0, 1, 2, 3},
+		},
+		3: {
+			input:    []string{},
+			callback: func(s string) int { return len(s) },
+			want:     []int{},
+		},
+		4: {
+			input:    nil,
+			callback: func(s string) int { return len(s) },
+			want:     []int{},
+		},
+	}
+
+	for index, tc := range tt {
 		got := Map(tc.input, tc.callback)
-		if got == nil && len(got) == len(tc.input) {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt2 = []struct {
-	input    []string
-	callback func(string) bool
-	output   []string
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) >= 4 },
-		output:   []string{"hello", "friend"},
-	},
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) > 8 },
-		output:   []string{},
-	},
-	{
-		input:    nil,
-		callback: func(s string) bool { return len(s) > 8 },
-		output:   []string{},
-	},
 }
 
 func TestFilter(t *testing.T) {
-	for _, tc := range tt2 {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) bool
+		want     []string
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) > 4 },
+			want:     []string{"hello", "friend"},
+		},
+		2: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) > 8 },
+			want:     []string{},
+		},
+		3: {
+			input:    nil,
+			callback: func(s string) bool { return len(s) > 8 },
+			want:     []string{},
+		},
+	}
+
+	for index, tc := range tt {
 		got := Filter(tc.input, tc.callback)
-		if got == nil && len(got) != len(tc.output) {
-			t.Errorf("got = %v; want = %v", len(got), len(tc.output))
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt3 = []struct {
-	input    []string
-	callback func(string) bool
-	output   bool
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) >= 4 },
-		output:   false,
-	},
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) >= 2 },
-		output:   true,
-	},
-	{
-		input:    nil,
-		callback: func(s string) bool { return len(s) >= 2 },
-		output:   false,
-	},
 }
 
 func TestEvery(t *testing.T) {
-	for _, tc := range tt3 {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) bool
+		want     bool
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) >= 4 },
+			want:     false,
+		},
+		2: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) >= 2 },
+			want:     true,
+		},
+		3: {
+			input:    nil,
+			callback: func(s string) bool { return len(s) >= 2 },
+			want:     false,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Every(tc.input, tc.callback)
-		if got != tc.output {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt4 = []struct {
-	input    []string
-	callback func(string) bool
-	output   bool
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) == 7 },
-		output:   false,
-	},
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) == 2 },
-		output:   true,
-	},
-	{
-		input:    nil,
-		callback: func(s string) bool { return len(s) == 2 },
-		output:   false,
-	},
 }
 
 func TestSome(t *testing.T) {
-	for _, tc := range tt4 {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) bool
+		want     bool
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) == 7 },
+			want:     false,
+		},
+		2: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) == 2 },
+			want:     true,
+		},
+		3: {
+			input:    nil,
+			callback: func(s string) bool { return len(s) == 2 },
+			want:     false,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Some(tc.input, tc.callback)
-		if got != tc.output {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt5 = []struct {
-	input  []string
-	key    string
-	output int
-}{
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		key:    "",
-		output: -1,
-	},
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		key:    "my",
-		output: 1,
-	},
-	{
-		input:  nil,
-		key:    "my",
-		output: -1,
-	},
 }
 
 func TestIndex(t *testing.T) {
-	for _, tc := range tt5 {
+	tt := []struct {
+		input []string
+		key   string
+		want  int
+	}{
+		{
+			input: []string{"hello", "my", "dear", "friend"},
+			key:   "",
+			want:  -1,
+		},
+		{
+			input: []string{"hello", "my", "dear", "friend"},
+			key:   "my",
+			want:  1,
+		},
+		{
+			input: nil,
+			key:   "my",
+			want:  -1,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Index(tc.input, tc.key)
-		if got != tc.output {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt6 = []struct {
-	input    []string
-	callback func(string) bool
-	output   int
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) == 7 },
-		output:   -1,
-	},
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) == 4 },
-		output:   2,
-	},
-	{
-		input:    nil,
-		callback: func(s string) bool { return len(s) == 7 },
-		output:   -1,
-	},
 }
 
 func TestIndexFunc(t *testing.T) {
-	for _, tc := range tt6 {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) bool
+		want     int
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) == 7 },
+			want:     -1,
+		},
+		2: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) == 4 },
+			want:     2,
+		},
+		3: {
+			input:    nil,
+			callback: func(s string) bool { return len(s) == 7 },
+			want:     -1,
+		},
+	}
+
+	for index, tc := range tt {
 		got := IndexFunc(tc.input, tc.callback)
-		if got != tc.output {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt7 = []struct {
-	input  []string
-	key    string
-	output bool
-}{
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		key:    "",
-		output: false,
-	},
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		key:    "my",
-		output: true,
-	},
-	{
-		input:  nil,
-		key:    "my",
-		output: false,
-	},
 }
 
 func TestContains(t *testing.T) {
-	for _, tc := range tt7 {
+	tt := map[int]struct {
+		input []string
+		key   string
+		want  bool
+	}{
+		1: {
+			input: []string{"hello", "my", "dear", "friend"},
+			key:   "",
+			want:  false,
+		},
+		2: {
+			input: []string{"hello", "my", "dear", "friend"},
+			key:   "my",
+			want:  true,
+		},
+		3: {
+			input: nil,
+			key:   "my",
+			want:  false,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Contains(tc.input, tc.key)
-		if got != tc.output {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt8 = []struct {
-	input    []string
-	initial  int
-	callback func(int, string) int
-	output   int
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		initial:  0,
-		callback: func(sum int, s string) int { return sum + len(s) },
-		output:   17,
-	},
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		initial:  10,
-		callback: func(sum int, s string) int { return sum + 1 },
-		output:   14,
-	},
-	{
-		input:    nil,
-		initial:  0,
-		callback: func(sum int, s string) int { return sum + len(s) },
-		output:   0,
-	},
 }
 
 func TestReduce(t *testing.T) {
-	for _, tc := range tt8 {
+	tt := map[int]struct {
+		input    []string
+		initial  int
+		callback func(int, string) int
+		want     int
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			initial:  0,
+			callback: func(sum int, s string) int { return sum + len(s) },
+			want:     17,
+		},
+		2: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			initial:  10,
+			callback: func(sum int, s string) int { return sum + 1 },
+			want:     14,
+		},
+		3: {
+			input:    nil,
+			initial:  0,
+			callback: func(sum int, s string) int { return sum + len(s) },
+			want:     0,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Reduce(tc.input, tc.initial, tc.callback)
-		if got != tc.output {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt9 = []struct {
-	input    []string
-	callback func(string) bool
-	output   string
-	isFound  bool
-}{
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) == 2 },
-		output:   "my",
-		isFound:  true,
-	},
-	{
-		input:    []string{"hello", "my", "dear", "friend"},
-		callback: func(s string) bool { return len(s) == 7 },
-		output:   "",
-		isFound:  false,
-	},
-	{
-		input:    nil,
-		callback: func(s string) bool { return len(s) == 4 },
-		output:   "",
-		isFound:  false,
-	},
 }
 
 func TestFind(t *testing.T) {
-	for _, tc := range tt9 {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) bool
+		want     string
+		isFound  bool
+	}{
+		1: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) == 2 },
+			want:     "my",
+			isFound:  true,
+		},
+		2: {
+			input:    []string{"hello", "my", "dear", "friend"},
+			callback: func(s string) bool { return len(s) == 7 },
+			want:     "",
+			isFound:  false,
+		},
+		3: {
+			input:    nil,
+			callback: func(s string) bool { return len(s) == 4 },
+			want:     "",
+			isFound:  false,
+		},
+	}
+
+	for index, tc := range tt {
 		got, isFound := Find(tc.input, tc.callback)
-		if got != tc.output && isFound != tc.isFound {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if got != tc.want && isFound != tc.isFound {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt10 = []struct {
-	input  []string
-	value  string
-	start  int
-	end    int
-	output []string
-}{
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		value:  "world",
-		start:  0,
-		end:    3,
-		output: []string{"world", "world", "world", "world"},
-	},
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		value:  "world",
-		start:  -5,
-		end:    7,
-		output: []string{"world", "world", "world", "world"},
-	},
-	{
-		input:  nil,
-		value:  "world",
-		start:  0,
-		end:    3,
-		output: []string{},
-	},
 }
 
 func TestFill(t *testing.T) {
-	for _, tc := range tt10 {
+	tt := map[int]struct {
+		input []string
+		value string
+		start int
+		end   int
+		want  []string
+	}{
+		1: {
+			input: []string{"hello", "my", "dear", "friend"},
+			value: "world",
+			start: 0,
+			end:   3,
+			want:  []string{"world", "world", "world", "world"},
+		},
+		2: {
+			input: []string{"hello", "my", "dear", "friend"},
+			value: "world",
+			start: -5,
+			end:   7,
+			want:  []string{"world", "world", "world", "world"},
+		},
+		3: {
+			input: nil,
+			value: "world",
+			start: 0,
+			end:   3,
+			want:  nil,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Fill(tc.input, tc.value, tc.start, tc.end)
-		if len(got) != len(tc.input) {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt11 = []struct {
-	input  []string
-	output []string
-}{
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		output: []string{"friend", "dear", "my", "hello"},
-	},
-	{
-		input:  []string{"hello"},
-		output: []string{"hello"},
-	},
-	{
-		input:  []string{},
-		output: []string{},
-	},
-	{
-		input:  nil,
-		output: []string{},
-	},
 }
 
 func TestReverse(t *testing.T) {
-	for _, tc := range tt11 {
+	tt := map[int]struct {
+		input []string
+		want  []string
+	}{
+		1: {
+			input: []string{"hello", "my", "dear", "friend"},
+			want:  []string{"friend", "dear", "my", "hello"},
+		},
+		2: {
+			input: []string{"hello"},
+			want:  []string{"hello"},
+		},
+		3: {
+			input: []string{},
+			want:  []string{},
+		},
+		4: {
+			input: nil,
+			want:  nil,
+		},
+	}
+
+	for index, tc := range tt {
 		got := Reverse(tc.input)
-		if len(got) != len(tc.input) {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt12 = []struct {
-	input  map[string]int
-	output []string
-}{
-	{
-		input:  map[string]int{"hello": 1, "my": 2, "dear": 3, "friend": 4},
-		output: []string{"hello", "my", "dear", "friend"},
-	},
-	{
-		input:  map[string]int{"hello": 1},
-		output: []string{"hello"},
-	},
-	{
-		input:  map[string]int{},
-		output: []string{},
-	},
-	{
-		input:  nil,
-		output: []string{},
-	},
 }
 
 func TestMapKeys(t *testing.T) {
-	for _, tc := range tt12 {
+	tt := map[int]struct {
+		input map[string]int
+		want  []string
+	}{
+		1: {
+			input: map[string]int{"hello": 1, "my": 2, "dear": 3, "friend": 4},
+			want:  []string{"hello", "my", "dear", "friend"},
+		},
+		2: {
+			input: map[string]int{"hello": 1},
+			want:  []string{"hello"},
+		},
+		3: {
+			input: map[string]int{},
+			want:  []string{},
+		},
+		4: {
+			input: nil,
+			want:  []string{},
+		},
+	}
+	for index, tc := range tt {
 		got := MapKeys(tc.input)
-		if got == nil || len(got) != len(tc.input) {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
-}
-
-var tt13 = []struct {
-	input  map[string]int
-	output []int
-}{
-	{
-		input:  map[string]int{"hello": 1, "my": 2, "dear": 3, "friend": 4},
-		output: []int{1, 2, 3, 4},
-	},
-	{
-		input:  map[string]int{"hello": 1},
-		output: []int{1},
-	},
-	{
-		input:  map[string]int{},
-		output: []int{},
-	},
-	{
-		input:  nil,
-		output: []int{},
-	},
 }
 
 func TestMapValues(t *testing.T) {
-	for _, tc := range tt13 {
+	tt := []struct {
+		input map[string]int
+		want  []int
+	}{
+		{
+			input: map[string]int{"hello": 1, "my": 2, "dear": 3, "friend": 4},
+			want:  []int{1, 2, 3, 4},
+		},
+		{
+			input: map[string]int{"hello": 1},
+			want:  []int{1},
+		},
+		{
+			input: map[string]int{},
+			want:  []int{},
+		},
+		{
+			input: nil,
+			want:  []int{},
+		},
+	}
+	for index, tc := range tt {
 		got := MapValues(tc.input)
-		if got == nil || len(got) != len(tc.input) {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
 }
 
-var tt14 = []struct {
-	input  []string
-	output []int
-}{
-	{
-		input:  []string{"hello", "my", "dear", "friend"},
-		output: []int{5, 2, 4, 6},
-	},
-	{
-		input:  []string{"hello"},
-		output: []int{1},
-	},
-	{
-		input:  []string{},
-		output: []int{},
-	},
-	{
-		input:  nil,
-		output: []int{},
-	},
-}
-
 func TestForEach(t *testing.T) {
-	for _, tc := range tt14 {
+	tt := map[int]struct {
+		input []string
+		want  []int
+	}{
+		1: {
+			input: []string{"hello", "my", "dear", "friend"},
+			want:  []int{5, 2, 4, 6},
+		},
+		2: {
+			input: []string{"hello"},
+			want:  []int{5},
+		},
+		3: {
+			input: []string{},
+			want:  []int{},
+		},
+		4: {
+			input: nil,
+			want:  []int{},
+		},
+	}
+
+	for index, tc := range tt {
 		got := []int{}
 		ForEach(tc.input, func(s string) { got = append(got, len(s)) })
-		if got == nil || len(got) != len(tc.input) {
-			t.Errorf("got = %v; want = %v", got, tc.output)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
 	}
 }
