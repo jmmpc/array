@@ -3,6 +3,8 @@ package array
 import (
 	"reflect"
 	"testing"
+
+	"golang.org/x/exp/slices"
 )
 
 func TestMap(t *testing.T) {
@@ -374,7 +376,7 @@ func TestMapKeys(t *testing.T) {
 	}{
 		1: {
 			input: map[string]int{"hello": 1, "my": 2, "dear": 3, "friend": 4},
-			want:  []string{"hello", "my", "dear", "friend"},
+			want:  []string{"dear", "friend", "hello", "my"},
 		},
 		2: {
 			input: map[string]int{"hello": 1},
@@ -391,6 +393,7 @@ func TestMapKeys(t *testing.T) {
 	}
 	for index, tc := range tt {
 		got := MapKeys(tc.input)
+		slices.Sort(got)
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
@@ -421,6 +424,7 @@ func TestMapValues(t *testing.T) {
 	}
 	for index, tc := range tt {
 		got := MapValues(tc.input)
+		slices.Sort(got)
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
