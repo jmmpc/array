@@ -22,6 +22,21 @@ func Filter[T any](slice []T, f func(T) bool) []T {
 	return newSlice
 }
 
+// FilterErrors creates a new slice with elements returned by
+// provided callback function. If the function returns non-nil error,
+// FilterError skips the current element.
+func FilterErrors[T1, T2 any](slice []T1, f func(T1) (T2, error)) []T2 {
+	newSlice := []T2{}
+
+	for _, element := range slice {
+		if newElement, err := f(element); err == nil {
+			newSlice = append(newSlice, newElement)
+		}
+	}
+
+	return newSlice
+}
+
 // ForEach helps to loop over slice by executing a provided callback
 // function for each element in a slice.
 func ForEach[T any](slice []T, f func(T)) {

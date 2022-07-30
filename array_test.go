@@ -2,6 +2,7 @@ package array
 
 import (
 	"reflect"
+	"strconv"
 	"testing"
 
 	"golang.org/x/exp/slices"
@@ -68,6 +69,37 @@ func TestFilter(t *testing.T) {
 
 	for index, tc := range tt {
 		got := Filter(tc.input, tc.callback)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
+		}
+	}
+}
+
+func TestFilterErrors(t *testing.T) {
+	tt := map[int]struct {
+		input    []string
+		callback func(string) (int, error)
+		want     []int
+	}{
+		1: {
+			input:    []string{"123", "12qwerty3", "123qwerty", "qwerty123"},
+			callback: strconv.Atoi,
+			want:     []int{123},
+		},
+		2: {
+			input:    []string{"qwerty", "123e"},
+			callback: strconv.Atoi,
+			want:     []int{},
+		},
+		3: {
+			input:    []string{"5487.2", "123", "", "0", "23"},
+			callback: strconv.Atoi,
+			want:     []int{123, 0, 23},
+		},
+	}
+
+	for index, tc := range tt {
+		got := FilterErrors(tc.input, tc.callback)
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
