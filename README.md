@@ -4,10 +4,11 @@
 <h3>Instalation:</h3>
 <code>go get github.com/jmmpc/array</code>
 
-<h3>Current function list:</h3>
+<h3>The current list of functions:</h3>
 <ul>
 <li>Map</li>
 <li>Filter</li>
+<li>FilterErrors</li>
 <li>ForEach</li>
 <li>Every</li>
 <li>Some</li>
