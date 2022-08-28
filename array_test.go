@@ -494,3 +494,86 @@ func TestForEach(t *testing.T) {
 		}
 	}
 }
+
+func TestRange(t *testing.T) {
+	tt := map[int]struct {
+		input []string
+		start int
+		n     int
+		want  []string
+	}{
+		1: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 1,
+			n:     -100,
+			want:  []string{"my", "dear", "friend"},
+		},
+		2: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 1,
+			n:     0,
+			want:  []string{"my", "dear", "friend"},
+		},
+		3: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 1,
+			n:     100,
+			want:  []string{"my", "dear", "friend"},
+		},
+		4: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: -100,
+			n:     1,
+			want:  []string{"hello"},
+		},
+		5: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 0,
+			n:     1,
+			want:  []string{"hello"},
+		},
+		6: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 100,
+			n:     1,
+			want:  []string{},
+		},
+		7: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: -100,
+			n:     -100,
+			want:  []string{"hello", "my", "dear", "friend"},
+		},
+		8: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 0,
+			n:     0,
+			want:  []string{"hello", "my", "dear", "friend"},
+		},
+		9: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 100,
+			n:     100,
+			want:  []string{},
+		},
+		10: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 1,
+			n:     2,
+			want:  []string{"my", "dear"},
+		},
+		11: {
+			input: []string{"hello", "my", "dear", "friend"},
+			start: 0,
+			n:     4,
+			want:  []string{"hello", "my", "dear", "friend"},
+		},
+	}
+
+	for index, tc := range tt {
+		got := Range(tc.input, tc.start, tc.n)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
+		}
+	}
+}

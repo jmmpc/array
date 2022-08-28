@@ -161,3 +161,36 @@ func MapValues[Key comparable, Val any](m map[Key]Val) []Val {
 	}
 	return newSlice
 }
+
+// Range returns a slice of T values in range [start : start + n].
+// if start <= 0, Range returns a slice of T values in range [:n]
+// If start >= len(list), Range returns an empty slice.
+// If n <= 0, Range returns a slice of T values in range [start:]
+// If n > 0, Range returns at most n T elements.
+func Range[T any](slice []T, start int, n int) []T {
+	length := len(slice)
+
+	if start <= 0 {
+		if n > 0 && n < length {
+			return slice[:n]
+		}
+
+		return slice
+	}
+
+	if start > 0 && start < length {
+		if n > 0 && start+n < length {
+			return slice[start : start+n]
+		}
+
+		if n > 0 && start+n >= length {
+			return slice[start:]
+		}
+
+		if n <= 0 {
+			return slice[start:]
+		}
+	}
+
+	return []T{}
+}

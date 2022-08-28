@@ -21,6 +21,7 @@
 <li>Reverse</li>
 <li>MapKeys</li>
 <li>MapValues</li>
+<li>Range</li>
 </ul>
 
 <p>All functions are generic so minimum requared version of Go is 1.18.</p>
