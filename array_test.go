@@ -2,10 +2,9 @@ package array
 
 import (
 	"reflect"
+	"sort"
 	"strconv"
 	"testing"
-
-	"golang.org/x/exp/slices"
 )
 
 func TestMap(t *testing.T) {
@@ -425,7 +424,7 @@ func TestMapKeys(t *testing.T) {
 	}
 	for index, tc := range tt {
 		got := MapKeys(tc.input)
-		slices.Sort(got)
+		sort.Strings(got)
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
@@ -456,7 +455,7 @@ func TestMapValues(t *testing.T) {
 	}
 	for index, tc := range tt {
 		got := MapValues(tc.input)
-		slices.Sort(got)
+		sort.Ints(got)
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
