@@ -8,7 +8,7 @@
 <ul>
 <li>Map</li>
 <li>Filter</li>
-<li>FilterErrors</li>
+<li>FilterMap</li>
 <li>ForEach</li>
 <li>Every</li>
 <li>Some</li>
