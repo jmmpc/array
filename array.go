@@ -5,7 +5,7 @@ import "errors"
 // SkipValue can be used in FilterMap callback function to indicate
 // that the current value is to be skipped.
 // It is not returned as an error by any function.
-var SkipValue = errors.New("skip this value")
+var ErrSkipValue = errors.New("skip this value")
 
 // Map creates a new slice with the results of calling a provided
 // function on every element in given slice.
