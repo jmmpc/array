@@ -1,5 +1,12 @@
 package array
 
+import "errors"
+
+// SkipValue can be used in FilterMap callback function to indicate
+// that the current value is to be skipped.
+// It is not returned as an error by any function.
+var SkipValue = errors.New("skip this value")
+
 // Map creates a new slice with the results of calling a provided
 // function on every element in given slice.
 func Map[T1, T2 any](slice []T1, f func(T1) T2) []T2 {
@@ -22,10 +29,10 @@ func Filter[T any](slice []T, f func(T) bool) []T {
 	return newSlice
 }
 
-// FilterErrors creates a new slice with elements returned by
+// FilterMap creates a new slice with elements returned by
 // provided callback function. If the function returns non-nil error,
 // FilterError skips the current element.
-func FilterErrors[T1, T2 any](slice []T1, f func(T1) (T2, error)) []T2 {
+func FilterMap[T1, T2 any](slice []T1, f func(T1) (T2, error)) []T2 {
 	newSlice := []T2{}
 
 	for _, element := range slice {

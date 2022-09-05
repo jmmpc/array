@@ -98,7 +98,7 @@ func TestFilterErrors(t *testing.T) {
 	}
 
 	for index, tc := range tt {
-		got := FilterErrors(tc.input, tc.callback)
+		got := FilterMap(tc.input, tc.callback)
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("Test #%d: got = %v; want = %v", index, got, tc.want)
 		}
