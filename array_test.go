@@ -74,7 +74,7 @@ func TestFilter(t *testing.T) {
 	}
 }
 
-func TestFilterErrors(t *testing.T) {
+func TestFilterMap(t *testing.T) {
 	tt := map[int]struct {
 		input    []string
 		callback func(string) (int, error)
@@ -94,6 +94,11 @@ func TestFilterErrors(t *testing.T) {
 			input:    []string{"5487.2", "123", "", "0", "23"},
 			callback: strconv.Atoi,
 			want:     []int{123, 0, 23},
+		},
+		4: {
+			input:    nil,
+			callback: strconv.Atoi,
+			want:     []int{},
 		},
 	}
 
@@ -355,9 +360,16 @@ func TestFill(t *testing.T) {
 		3: {
 			input: nil,
 			value: "world",
-			start: 0,
-			end:   3,
-			want:  nil,
+			start: 2,
+			end:   5,
+			want:  []string{"", "", "world", "world", "world", "world"},
+		},
+		4: {
+			input: []string{"hello", "my", "dear", "friend"},
+			value: "world",
+			start: 7,
+			end:   2,
+			want:  []string{"hello", "my", "dear", "friend"},
 		},
 	}
 
@@ -388,7 +400,7 @@ func TestReverse(t *testing.T) {
 		},
 		4: {
 			input: nil,
-			want:  nil,
+			want:  []string{},
 		},
 	}
 
@@ -566,6 +578,12 @@ func TestRange(t *testing.T) {
 			start: 0,
 			n:     4,
 			want:  []string{"hello", "my", "dear", "friend"},
+		},
+		12: {
+			input: nil,
+			start: 0,
+			n:     4,
+			want:  []string{},
 		},
 	}
 

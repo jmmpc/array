@@ -31,7 +31,7 @@ func Filter[T any](slice []T, f func(T) bool) []T {
 
 // FilterMap creates a new slice with elements returned by
 // provided callback function. If the function returns non-nil error,
-// FilterError skips the current element.
+// FilterMap skips the current element.
 func FilterMap[T1, T2 any](slice []T1, f func(T1) (T2, error)) []T2 {
 	newSlice := []T2{}
 
@@ -131,8 +131,17 @@ func Find[T any](slice []T, f func(T) bool) (T, bool) {
 }
 
 // Fill fills the elements in a slice with a static value and returns
-// the modified slice. Fill returns nil if given slice == nil.
+// the modified slice. If given slice == nil the function returns new
+// slice with length equal end and filled with value from start to end.
 func Fill[T any](slice []T, value T, start, end int) []T {
+	if slice == nil {
+		slice = make([]T, end+1)
+	}
+
+	if start >= end {
+		return slice
+	}
+
 	for index := range slice {
 		if index >= start && index <= end {
 			slice[index] = value
@@ -142,12 +151,17 @@ func Fill[T any](slice []T, value T, start, end int) []T {
 }
 
 // Reverse reverses a slice in place. Element at last index will be
-// first and element at 0 index will be last. Reverse returns nil if
+// first and element at 0 index will be last. Reverse returns empty slice of type []T if
 // given slice == nil.
 func Reverse[T any](slice []T) []T {
+	if slice == nil {
+		return []T{}
+	}
+
 	for i, j := 0, len(slice)-1; i < j; i, j = i+1, j-1 {
 		slice[i], slice[j] = slice[j], slice[i]
 	}
+
 	return slice
 }
 
@@ -175,6 +189,10 @@ func MapValues[Key comparable, Val any](m map[Key]Val) []Val {
 // If n <= 0, Range returns a slice of T values in range [start:]
 // If n > 0, Range returns at most n T elements.
 func Range[T any](slice []T, start int, n int) []T {
+	if slice == nil {
+		return []T{}
+	}
+
 	length := len(slice)
 
 	if start <= 0 {
